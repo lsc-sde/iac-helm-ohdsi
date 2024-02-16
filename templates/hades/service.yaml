@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: {{ include "ohdsi.hades.name" . }}
+  name: {{ include "ohdsi.hades.name" . }}
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  selector:
+    app: {{ include "ohdsi.hades.name" . }}
+  ports:
+  - name: http
+    port: {{ .Values.hades.service.port }} 
+    targetPort: {{ .Values.hades.port }}
+  - name: rserve
+    port: {{ .Values.hades.service.rserve.port }} 
+    targetPort: {{ .Values.hades.rserve.port }}

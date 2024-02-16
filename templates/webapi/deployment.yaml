@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ include "ohdsi.webapi.name" . }}
+  name: {{ include "ohdsi.webapi.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "ohdsi.webapi.name" . }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ohdsi.webapi.name" . }}
+    spec:
+      containers:
+        - image: {{ .Values.webapi.image }}
+          name: webapi
+          env:
+          - name: DATASOURCE_DRIVERCLASSNAME
+            value: {{ include "ohdsi.datasource.type" . }}
+
+          - name: DATASOURCE_OHDSI_SCHEMA
+            value: {{ .Values.datasource.schema }}
+
+          - name: DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ohdsi.datasource.password.secret" . }}
+                key: {{ .Values.datasource.password.key }}
+
+          - name: DATASOURCE_URL
+            value: {{ include "ohdsi.datasource.url" . }}
+
+          - name: DATASOURCE_USERNAME
+            value: {{ .Values.datasource.user }}
+
+          - name: FLYWAY_BASELINEDESCRIPTION
+            value: {{ .Values.flyway.baseline.description }}
+
+          - name: FLYWAY_BASELINEONMIGRATE
+            value: {{ .Values.flyway.baseline.onMigrate | quote }}
+
+          - name: FLYWAY_DATASOURCE_DRIVERCLASSNAME
+            value: {{ include "ohdsi.flyway.datasource.type" .}}
+
+          - name: FLYWAY_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ohdsi.flyway.datasource.password.secret" . }}
+                key: {{ .Values.flyway.datasource.password.key }}
+
+          - name: FLYWAY_DATASOURCE_URL
+            value: {{ include "ohdsi.flyway.datasource.url" . }}
+
+          - name: FLYWAY_DATASOURCE_USERNAME
+            value: {{ .Values.flyway.datasource.user }}
+
+          - name: FLYWAY_LOCATIONS
+            value: {{ .Values.flyway.locations }}
+
+          - name: FLYWAY_PLACEHOLDERS_OHDSISCHEMA
+            value: {{ .Values.flyway.placeholder.ohdsi.schema }}
+
+          - name: FLYWAY_SCHEMAS
+            value: {{ .Values.flyway.schemas }}
+
+          - name: FLYWAY_TABLE
+            value: {{ .Values.flyway.table }}
+
+          - name: SECURITY_CORS_ENABLED
+            value: {{ .Values.webapi.security.cors.enabled | quote }}
+
+          - name: SECURITY_ORIGIN
+            value: {{ .Values.webapi.security.cors.origin | quote }}
+
+          - name: SPRING_BATCH_REPOSITORY_TABLEPREFIX
+            value: {{ .Values.webapi.spring.batch.repository.tablePrefix | quote }}
+
+          - name: SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA
+            value: {{ .Values.webapi.spring.jpa.properties.hibernate.defaultSchema }}
+
+          - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+            value: {{ .Values.webapi.spring.jpa.properties.hibernate.dialect }}
+
+          - name: flyway_baselineVersionAsString
+            value: {{ .Values.flyway.baseline.version | quote }}
+
+          {{ if .Values.webapi.env }}          
+          {{ toYaml .Values.webapi.env | nindent 10 }}
+          {{ end }}
+          resources:
+          {{ if .Values.webapi.resources }}          
+          {{ toYaml .Values.webapi.resources | nindent 10 }}
+          {{ end }}
+          volumeMounts:
+          - mountPath: /tmp
+            name: ohdsi-webapi-tmpfs0
+          {{ if .Values.webapi.volumeMounts }}          
+          {{ toYaml .Values.webapi.volumeMounts | nindent 10 }}
+          {{ end }}
+      restartPolicy: Always
+      volumes:
+      - emptyDir:
+          medium: Memory
+        name: ohdsi-webapi-tmpfs0
+      {{ if .Values.webapi.volumes }}
+      {{ toYaml .Values.webapi.volumes | nindent 6 }}
+      {{ end }}

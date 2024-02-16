@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ include "ohdsi.hades.name" . }}
+  name: {{ include "ohdsi.hades.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "ohdsi.hades.name" . }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ include "ohdsi.hades.name" . }}
+    spec:
+      containers:
+        - env:
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ohdsi.hades.password.secret" . }}
+                key: {{ .Values.hades.password.key }}
+
+          - name: USER
+            value: {{ .Values.hades.user }}
+
+          {{ if .Values.hades.env }}          
+          {{ toYaml .Values.hades.env | nindent 10 }}
+          {{ end }}
+          
+          image: {{ .Values.hades.image }}
+          name: hades
+          ports:
+            - containerPort: {{ .Values.hades.port }}
+            - containerPort: 6311
+          resources:
+          {{ if .Values.hades.resources }}          
+          {{ toYaml .Values.hades.resources | nindent 10 }}
+          {{ end }}
+          volumeMounts:
+          {{ if .Values.hades.volumeMounts }}          
+          {{ toYaml .Values.hades.volumeMounts | nindent 10 }}
+          {{ end }}
+      restartPolicy: Always
+      volumes:
+      {{ if .Values.hades.volumes }}
+      {{ toYaml .Values.hades.volumes | nindent 6 }}
+      {{ end }}

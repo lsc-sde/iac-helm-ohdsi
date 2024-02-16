@@ -1,0 +1,105 @@
+atlas:
+  image: "ohdsi/atlas:2.14.0"
+  replicas: 1
+  nodeSelector: {}
+  tolerations: []
+  volumes: []
+  volumeMounts: []
+  env: []
+  resources: {}
+  port: "8080"
+  service:
+    port: "8080"
+
+hades:
+  image: "ohdsi/broadsea-hades:4.2.1"
+  replicas: 1
+  nodeSelector: {}
+  tolerations: []
+  volumes: []
+  volumeMounts: []
+  env: []
+  resources: {}
+  port: "8787"
+  rserve:
+    port: "6311"
+  service:
+    port: "8787"
+    rserve:
+      port: "6311"
+  user: "ohdsi"
+  password:
+    secret: ""
+    key: "hades-password"
+
+webapi:
+  image: "ohdsi/webapi:2.14.0"
+  replicas: 1
+  nodeSelector: {}
+  tolerations: []
+  volumes: []
+  volumeMounts: []
+  env: []
+  resources: {}
+  port: "8080"
+  service:
+    port: "8080"
+
+  security:
+    cors:
+      enabled: "true"
+      origin: "http://127.0.0.1"
+
+  spring:
+    jpa:
+      properties:
+        hibernate:
+          defaultSchema: "webapi"
+          dialect: "org.hibernate.dialect.PostgreSQLDialect"
+    batch:
+      repository:
+        tablePrefix: "webapi.BATCH_"
+
+
+flyway:
+  baseline:
+    description: Base Migration
+    onMigrate: "true"
+    type: "postgres"
+    version: "2.2.5.20180212152023"
+  locations: "classpath:db/migration/postgresql"
+  placeholder:
+    ohdsi:
+      schema: "webapi"
+  schemas: "webapi"
+  table: "schema_history"
+  datasource:
+    type: "postgres"
+    hostname: ""
+    port: "5432"
+    database: ""
+    schema: "webapi"
+    user: ""
+    password:
+      secret: ""
+      key: "db-password"
+
+datasource:
+  type: "postgres"
+  hostname: ""
+  port: "5432"
+  database: ""
+  schema: "webapi"
+  user: ""
+  password:
+    secret: ""
+    key: "db-password"
+
+ingress:
+  enabled: true
+  className: nginx
+  host: "ohdsi.xlscsde.local"
+  annotations: {}
+  tls:
+    enabled: false
+    secretName: ""

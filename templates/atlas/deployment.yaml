@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ include "ohdsi.atlas.name" . }}
+  name: {{ include "ohdsi.atlas.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "ohdsi.atlas.name" . }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ohdsi.atlas.name" . }}
+    spec:
+      containers:
+        - env:
+          - name: WEBAPI_URL
+            value: {{ include "ohdsi.webapi.url" . }}
+          {{ if .Values.atlas.env }}          
+          {{ toYaml .Values.atlas.env | nindent 10 }}
+          {{ end }}
+          image: {{ .Values.atlas.image }}
+          name: atlas
+          ports:
+          - containerPort: {{ .Values.atlas.port }}
+          resources: 
+          {{ if .Values.atlas.resources }}          
+          {{ toYaml .Values.atlas.resources | nindent 10 }}
+          {{ end }}
+          volumeMounts:
+          {{ if .Values.atlas.volumeMounts }}          
+          {{ toYaml .Values.atlas.volumeMounts | nindent 10 }}
+          {{ end }}
+      restartPolicy: Always
+      volumes:
+      {{ if .Values.atlas.volumes }}
+      {{ toYaml .Values.atlas.volumes | nindent 6 }}
+      {{ end }}
