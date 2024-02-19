@@ -95,6 +95,16 @@ datasource:
     secret: ""
     key: "db-password"
 
+security:
+  provider: "DisabledSecurity"
+  oid:
+    clientId: ""
+    apiSecret:
+      secretName: ""
+      key: "api-secret"
+    url: ""
+    redirectUrl: ""
+
 ingress:
   enabled: true
   className: nginx

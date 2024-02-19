@@ -88,6 +88,34 @@ spec:
           - name: flyway_baselineVersionAsString
             value: {{ .Values.flyway.baseline.version | quote }}
 
+          {{ if ne .Values.security.provider "" }}          
+          - name: SECURITY_PROVIDER
+            value: {{ .Values.security.provider }}
+          {{ end}}
+
+          {{ if ne .Values.security.oid.clientId "" }}          
+          - name: SECURITY_OID_CLIENTID
+            value: {{ .Values.security.oid.clientId }}
+          {{ end}}
+
+          {{ if .Values.security.oid.apiSecret.secretName }}          
+          - name: SECURITY_OID_APISECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.security.oid.apiSecret.secretName }}
+                key: {{ .Values.security.oid.apiSecret.key }}
+          {{ end}}
+
+          {{ if ne .Values.security.oid.url "" }}          
+          - name: SECURITY_OID_URL
+            value: {{ .Values.security.oid.url }}
+          {{ end}}
+
+          {{ if ne .Values.security.oid.redirectUrl "" }}          
+          - name: SECURITY_OID_REDIRECTURL
+            value: {{ .Values.security.oid.redirectUrl }}
+          {{ end}}
+
           {{ if .Values.webapi.env }}          
           {{ toYaml .Values.webapi.env | nindent 10 }}
           {{ end }}
