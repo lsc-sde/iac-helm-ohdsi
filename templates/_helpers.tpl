@@ -17,9 +17,10 @@
 {{- else }}
 {{- printf "http" }}
 {{- end }}
+{{- end }}
 
 {{- define "ohdsi.webapi.url" -}}
-{{- printf "%s://%s/WebAPI/" (include "ohdsi.webapi.protocol" . ) .Values.ingress.host }}
+{{- printf "%s://%s/WebAPI/" (include "ohdsi.webapi.protocol" .) .Values.ingress.host }}
 {{- end }}
 
 {{- define "ohdsi.datasource.type" -}}
