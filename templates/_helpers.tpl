@@ -11,8 +11,15 @@
 {{- end }}
 
 
+{{- define "ohdsi.webapi.protocol" -}}
+{{- if .Values.ingress.tls.enabled }}
+{{- printf "https" }}
+{{- else }}
+{{- printf "http" }}
+{{- end }}
+
 {{- define "ohdsi.webapi.url" -}}
-{{- printf "http://%s/WebAPI/" .Values.ingress.host }}
+{{- printf "%s://%s/WebAPI/" (include "ohdsi.webapi.protocol" . ) .Values.ingress.host }}
 {{- end }}
 
 {{- define "ohdsi.datasource.type" -}}
