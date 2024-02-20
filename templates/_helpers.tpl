@@ -25,7 +25,16 @@
 
 {{- define "ohdsi.webapi.javaopts" -}}
 {{- if .Values.ingress.tls.enabled }}
-{{- printf "-Dserver.ssl.enabled=true -Dserver.port=%s -Dserver.ssl.key-store=/mnt/keystore/keystore.jks -Dserver.ssl.keyStoreType=JKS -Dserver.ssl.key-alias=tomcat -Dserver.ssl.key-store-password=Ref4ct0r -Dserver.ssl.key-password=Ref4ct0r" (include "ohdsi.webapi.port" .) }}
+{{- printf "-Dserver.ssl.enabled=true " }}
+{{- printf "-Dserver.ssl.key-store=/mnt/keystore/keystore.jks " }}
+{{- printf "-Dserver.ssl.keyStoreType=JKS " }}
+{{- printf "-Dserver.ssl.key-alias=tomcat " }}
+{{- printf "-Dserver.ssl.key-store-password=Ref4ct0r " }}
+{{- printf "-Dserver.ssl.key-password=Ref4ct0r " }}
+{{- printf "-Dserver.port=%s " (include "ohdsi.webapi.port" .)}}
+{{- end}}
+{{- if ne .Values.webapi.truststore.path "" }}
+{{- printf "-Dserver.ssl.trust-store=%s -Dserver.ssl.trust-store=$TRUSTSTORE_PASSWORD " .Values.webapi.truststore.path }}
 {{- end}}
 {{- end}}
 

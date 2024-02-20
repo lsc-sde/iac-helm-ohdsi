@@ -50,6 +50,12 @@ webapi:
       enabled: "true"
       origin: "http://127.0.0.1"
 
+  truststore:
+    path: ""
+    passwordSecret:
+      name: ""
+      key: ""
+
   spring:
     jpa:
       properties:
