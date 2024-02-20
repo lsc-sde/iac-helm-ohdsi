@@ -38,6 +38,7 @@
 {{- end}}
 {{- if ne .Values.security.oid.redirectUrl "" }}          
 {{- printf "-Dsecurity.oid.redirectUrl=%s " .Values.security.oid.redirectUrl }}
+{{- printf "-Dsecurity.oauth.callback.api=%s " .Values.security.oid.redirectUrl }}
 {{- end}}
 {{- end}}
 
