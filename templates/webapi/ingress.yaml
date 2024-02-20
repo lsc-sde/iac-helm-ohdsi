@@ -7,6 +7,7 @@ metadata:
     {{ if .Values.ingress.tls.enabled }}
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     {{ end }}
+    nginx.ingress.kubernetes.io/upstream-vhost: {{ include "ohdsi.webapi.upstream-vhost" . }}
     
     {{ if .Values.ingress.annotations }}          
     {{ toYaml .Values.ingress.annotations | nindent 4 }}

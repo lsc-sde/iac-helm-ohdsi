@@ -8,7 +8,7 @@
 
 {{- define "ohdsi.webapi.port" -}}
 {{- if .Values.ingress.tls.enabled }}
-{{- printf "443" }}
+{{- printf "8443" }}
 {{- else }}
 {{- printf .Values.webapi.port }}
 {{- end}}
@@ -41,6 +41,11 @@
 {{- else }}
 {{- printf "http" }}
 {{- end }}
+{{- end }}
+
+
+{{- define "ohdsi.webapi.upstream-vhost" -}}
+{{- printf "%s:%s" .Values.ingress.host (include "ohdsi.webapi.port" .) }}
 {{- end }}
 
 {{- define "ohdsi.webapi.url" -}}
