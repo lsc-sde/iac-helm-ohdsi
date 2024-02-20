@@ -14,6 +14,14 @@
 {{- end}}
 {{- end}}
 
+{{- define "ohdsi.webapi.portName" -}}
+{{- if .Values.ingress.tls.enabled }}
+{{- printf "https" }}
+{{- else }}
+{{- printf "http" }}
+{{- end}}
+{{- end}}
+
 
 {{- define "ohdsi.webapi.javaopts" -}}
 {{- if .Values.ingress.tls.enabled }}

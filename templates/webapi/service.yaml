@@ -11,6 +11,6 @@ spec:
   selector:
     app: {{ include "ohdsi.webapi.name" . }}
   ports:
-  - name: http
+  - name: {{ include "ohdsi.webapi.portName" . }}
     port: {{ .Values.webapi.service.port }} 
     targetPort: {{ include "ohdsi.webapi.port" . }}
