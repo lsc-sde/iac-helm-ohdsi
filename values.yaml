@@ -33,7 +33,7 @@ hades:
     key: "hades-password"
 
 webapi:
-  image: "ohdsi/webapi:2.14.0"
+  image: "lscsde/ohdsi-webapi:0.1.0"
   replicas: 1
   nodeSelector: {}
   tolerations: []
