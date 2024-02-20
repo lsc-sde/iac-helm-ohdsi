@@ -157,11 +157,6 @@ spec:
             value: {{ .Values.security.oid.url }}
           {{ end}}
 
-          {{ if ne .Values.security.oid.redirectUrl "" }}          
-          - name: SECURITY_OID_REDIRECTURL
-            value: {{ .Values.security.oid.redirectUrl }}
-          {{ end}}
-
           {{ if .Values.ingress.tls.enabled }}
           - name: SECURITY_SSL_ENABLED
             value: "true"
