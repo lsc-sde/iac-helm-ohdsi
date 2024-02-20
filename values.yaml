@@ -98,6 +98,7 @@ datasource:
 security:
   provider: "DisabledSecurity"
   oid:
+    enabled: false
     clientId: ""
     apiSecret:
       secretName: ""

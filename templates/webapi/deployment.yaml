@@ -15,6 +15,38 @@ spec:
       labels:
         app: {{ include "ohdsi.webapi.name" . }}
     spec:
+      {{ if .Values.ingress.tls.enabled }}
+      initContainers:
+        - image: {{ .Values.webapi.image }}
+          name: pem-to-keystore
+          command: ['/bin/bash']
+          args: ['-c', "openssl pkcs12 -export -inkey $keyfile -in $crtfile -out $keystore_pkcs12 -password pass:$password && keytool -importkeystore -noprompt -srckeystore $keystore_pkcs12 -srcstoretype pkcs12 -destkeystore $keystore_jks -storepass $password -srcstorepass $password -srcalias 1 -destalias tomcat"]
+          env:
+          # input files
+          - name: crtfile
+            value: /mnt/certificate/tls.crt
+          - name: keyfile
+            value: /mnt/certificate/tls.key
+
+          # export files
+          - name: keystore_pkcs12
+            value: /mnt/keystore/keystore.pkcs12
+          
+          - name: keystore_jks
+            value: /mnt/keystore/keystore.jks
+
+          # Password for the certificate
+          - name: password
+            value: Ref4ct0r
+
+          volumeMounts:         
+          - mountPath: /mnt/keystore
+            name: keystore-volume
+          
+          - mountPath: /mnt/certificate
+            name: certificate
+      {{ end }}
+
       containers:
         - image: {{ .Values.webapi.image }}
           name: webapi
@@ -93,6 +125,11 @@ spec:
             value: {{ .Values.security.provider }}
           {{ end}}
 
+          {{ if .Values.security.oid.enabled }}          
+          - name: SECURITY_OID_ENABLED
+            value: {{ .Values.security.oid.enabled | quote }}
+          {{ end}}
+
           {{ if ne .Values.security.oid.clientId "" }}          
           - name: SECURITY_OID_CLIENTID
             value: {{ .Values.security.oid.clientId }}
@@ -116,6 +153,16 @@ spec:
             value: {{ .Values.security.oid.redirectUrl }}
           {{ end}}
 
+          {{ if .Values.ingress.tls.enabled }}
+          - name: SECURITY_SSL_ENABLED
+            value: "true"
+          {{ end }}
+
+          {{ if ne (include "ohdsi.webapi.javaopts" .) "" }}
+          - name: JAVA_OPTS
+            value: {{ include "ohdsi.webapi.javaopts" . }}
+          {{ end }}
+
           {{ if .Values.webapi.env }}          
           {{ toYaml .Values.webapi.env | nindent 10 }}
           {{ end }}
@@ -126,6 +173,13 @@ spec:
           volumeMounts:
           - mountPath: /tmp
             name: ohdsi-webapi-tmpfs0
+
+          {{ if .Values.ingress.tls.enabled }}
+          - mountPath: /mnt/keystore
+            name: keystore-volume
+            readOnly: true
+          {{ end }}
+
           {{ if .Values.webapi.volumeMounts }}          
           {{ toYaml .Values.webapi.volumeMounts | nindent 10 }}
           {{ end }}
@@ -134,6 +188,15 @@ spec:
       - emptyDir:
           medium: Memory
         name: ohdsi-webapi-tmpfs0
+
+      {{ if .Values.ingress.tls.enabled }}
+      - name: keystore-volume
+        emptyDir: {}
+      - name: certificate
+        secret:
+          secretName: {{ .Values.ingress.tls.secretName }}
+      {{ end }}
+      
       {{ if .Values.webapi.volumes }}
       {{ toYaml .Values.webapi.volumes | nindent 6 }}
       {{ end }}

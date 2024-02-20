@@ -6,6 +6,22 @@
 {{- printf "%s-webapi" .Release.Name }}
 {{- end }}
 
+{{- define "ohdsi.webapi.port" -}}
+{{- if .Values.ingress.tls.enabled }}
+{{- printf "443" }}
+{{- else }}
+{{- printf .Values.webapi.port }}
+{{- end}}
+{{- end}}
+
+
+{{- define "ohdsi.webapi.javaopts" -}}
+{{- if .Values.ingress.tls.enabled }}
+{{- printf "-Dserver.ssl.enabled=true -Dserver.port=%s -Dserver.ssl.key-store=/mnt/keystore/keystore.jks -Dserver.ssl.keyStoreType=JKS -Dserver.ssl.key-alias=tomcat -Dserver.ssl.key-store-password=Ref4ct0r -Dserver.ssl.key-password=Ref4ct0r" (include "ohdsi.webapi.port" .) }}
+{{- end}}
+{{- end}}
+
+
 {{- define "ohdsi.hades.name" -}}
 {{- printf "%s-hades" .Release.Name }}
 {{- end }}

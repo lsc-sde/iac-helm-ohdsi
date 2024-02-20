@@ -2,11 +2,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:  
-  name: {{ .Release.Name }}
+  name: {{ include "ohdsi.webapi.name" . }}
   annotations: 
-  {{ if .Values.ingress.annotations }}          
+    {{ if .Values.ingress.tls.enabled }}
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    {{ end }}
+    
+    {{ if .Values.ingress.annotations }}          
     {{ toYaml .Values.ingress.annotations | nindent 4 }}
-  {{ end }}
+    {{ end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}
   rules:
@@ -16,26 +20,10 @@ spec:
           - pathType: Prefix
             backend:
               service:
-                name: {{ include "ohdsi.atlas.name" . }}
-                port:
-                  number: {{ .Values.atlas.service.port }}
-            path: /atlas
-
-          - pathType: Prefix
-            backend:
-              service:
                 name: {{ include "ohdsi.webapi.name" . }}
                 port:
                   number: {{ .Values.webapi.service.port }}
             path: /WebAPI
-
-          - pathType: Prefix
-            backend:
-              service:
-                name: {{ include "ohdsi.hades.name" . }}
-                port:
-                  number: {{ .Values.hades.service.port }}
-            path: /
 
   {{ if .Values.ingress.tls.enabled }}
   tls:
