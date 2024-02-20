@@ -32,6 +32,7 @@ spec:
           {{ end }}
           
           image: {{ .Values.hades.image }}
+          imagePullPolicy: Always
           name: hades
           ports:
             - containerPort: {{ .Values.hades.port }}

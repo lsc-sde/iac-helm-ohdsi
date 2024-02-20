@@ -18,6 +18,7 @@ spec:
       {{ if .Values.ingress.tls.enabled }}
       initContainers:
         - image: {{ .Values.webapi.image }}
+          imagePullPolicy: Always
           name: pem-to-keystore
           command: ['/bin/bash']
           args: ['-c', "openssl pkcs12 -export -inkey $keyfile -in $crtfile -out $keystore_pkcs12 -password pass:$password && keytool -importkeystore -noprompt -srckeystore $keystore_pkcs12 -srcstoretype pkcs12 -destkeystore $keystore_jks -storepass $password -srcstorepass $password -srcalias 1 -destalias tomcat"]
@@ -49,6 +50,7 @@ spec:
 
       containers:
         - image: {{ .Values.webapi.image }}
+          imagePullPolicy: Always
           name: webapi
           securityContext:
             allowPrivilegeEscalation: false

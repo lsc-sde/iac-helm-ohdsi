@@ -23,6 +23,7 @@ spec:
           {{ toYaml .Values.atlas.env | nindent 10 }}
           {{ end }}
           image: {{ .Values.atlas.image }}
+          imagePullPolicy: Always
           name: atlas
           ports:
           - containerPort: {{ .Values.atlas.port }}
