@@ -167,16 +167,6 @@ spec:
             value: "true"
           {{ end }}
 
-          - name: TRUSTSTORE_PASSWORD
-            {{ if eq .Values.webapi.truststore.passwordSecret.name "" }}    
-            value: "changeit"
-            {{ else }}
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.webapi.truststore.passwordSecret.name }}
-                key: {{ .Values.webapi.truststore.passwordSecret.key }}
-            {{ end }}
-
           {{ if ne (include "ohdsi.webapi.javaopts" .) "" }}
           - name: JAVA_OPTS
             value: {{ include "ohdsi.webapi.javaopts" . }}

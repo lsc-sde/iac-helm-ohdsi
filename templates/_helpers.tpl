@@ -34,7 +34,7 @@
 {{- printf "-Dserver.port=%s " (include "ohdsi.webapi.port" .)}}
 {{- end}}
 {{- if ne .Values.webapi.truststore.path "" }}
-{{- printf "-Dserver.ssl.trust-store=%s -Dserver.ssl.trust-store-password=$TRUSTSTORE_PASSWORD " .Values.webapi.truststore.path }}
+{{- printf "-Dserver.ssl.trust-store=%s -Dserver.ssl.trust-store-password=changeit " .Values.webapi.truststore.path }}
 {{- end}}
 {{- end}}
 

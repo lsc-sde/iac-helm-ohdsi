@@ -52,10 +52,7 @@ webapi:
 
   truststore:
     path: ""
-    passwordSecret:
-      name: ""
-      key: ""
-
+    
   spring:
     jpa:
       properties:
