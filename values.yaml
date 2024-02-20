@@ -52,7 +52,7 @@ webapi:
 
   truststore:
     path: ""
-    
+
   spring:
     jpa:
       properties:
@@ -100,6 +100,11 @@ datasource:
 
 security:
   provider: "DisabledSecurity"
+  oauth:
+    callback:
+      api: ""
+      ui: ""
+      urlResolver: "query"
   oid:
     enabled: false
     clientId: ""

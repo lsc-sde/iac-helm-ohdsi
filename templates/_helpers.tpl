@@ -38,9 +38,18 @@
 {{- end}}
 {{- if ne .Values.security.oid.redirectUrl "" }}          
 {{- printf "-Dsecurity.oid.redirectUrl=%s " .Values.security.oid.redirectUrl }}
-{{- printf "-Dsecurity.oauth.callback.api=%s " .Values.security.oid.redirectUrl }}
+{{- end}}
+{{- if ne .Values.security.oauth.callback.api "" }}          
+{{- printf "-Dsecurity.oauth.callback.api=%s " .Values.security.oauth.callback.api }}
+{{- end}}
+{{- if ne .Values.security.oauth.callback.ui "" }}          
+{{- printf "-Dsecurity.oauth.callback.ui=%s " .Values.security.oauth.callback.ui }}
+{{- end}}
+{{- if ne .Values.security.oauth.callback.urlResolver "" }}          
+{{- printf "-Dsecurity.oauth.callback.urlResolver=%s " .Values.security.oauth.callback.urlResolver }}
 {{- end}}
 {{- end}}
+
 
 
 {{- define "ohdsi.hades.name" -}}
