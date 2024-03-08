@@ -60,7 +60,7 @@
 {{- if ne .Values.security.shiro.enabled "" }}          
 {{- printf "-Dshiro.enabled=%s " .Values.security.shiro.enabled }}
 {{- end}}
-{{- if ne .Values.security.web.shiro.enabled "" }}          
+{{- if ne .Values.security.shiro.web.enabled "" }}          
 {{- printf "-Dshiro.web.enabled=%s " .Values.security.shiro.web.enabled }}
 {{- end}}
 {{- end}}
