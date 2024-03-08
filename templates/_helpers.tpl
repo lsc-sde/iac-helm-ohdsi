@@ -48,8 +48,22 @@
 {{- if ne .Values.security.oauth.callback.urlResolver "" }}          
 {{- printf "-Dsecurity.oauth.callback.urlResolver=%s " .Values.security.oauth.callback.urlResolver }}
 {{- end}}
+{{- if ne .Values.security.shiro.successUrl "" }}          
+{{- printf "-Dshiro.successUrl=%s " .Values.security.shiro.successUrl }}
 {{- end}}
-
+{{- if ne .Values.security.shiro.loginUrl "" }}          
+{{- printf "-Dshiro.loginUrl=%s " .Values.security.shiro.loginUrl }}
+{{- end}}
+{{- if ne .Values.security.shiro.unauthorizedUrl "" }}          
+{{- printf "-Dshiro.unauthorizedUrl=%s " .Values.security.shiro.unauthorizedUrl }}
+{{- end}}
+{{- if ne .Values.security.shiro.enabled "" }}          
+{{- printf "-Dshiro.enabled=%s " .Values.security.shiro.enabled }}
+{{- end}}
+{{- if ne .Values.security.web.shiro.enabled "" }}          
+{{- printf "-Dshiro.web.enabled=%s " .Values.security.shiro.web.enabled }}
+{{- end}}
+{{- end}}
 
 
 {{- define "ohdsi.hades.name" -}}

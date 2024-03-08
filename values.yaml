@@ -100,6 +100,13 @@ datasource:
 
 security:
   provider: "DisabledSecurity"
+  shiro:
+    successUrl: ""
+    unauthorizedUrl: ""
+    loginUrl: ""
+    enabled: ""
+    web:
+      enabled: ""
   oauth:
     callback:
       api: ""
