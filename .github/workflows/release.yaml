@@ -1,0 +1,32 @@
+name: Create Release Branch from Main
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - 'main'
+
+jobs:
+  semver:
+    uses: lsc-sde/lsc-sde/.github/workflows/semver.yaml@main
+    with:
+      useConfigFile: true
+
+  package:
+    uses: lsc-sde/lsc-sde/.github/workflows/helm-package.yaml@main
+    needs: semver
+    with:
+      symver: ${{ needs.semver.outputs.GitVersion_SemVer }}
+      directory: iac/helm/ohsdi
+    secrets: inherit
+
+
+  submodule:
+    uses: lsc-sde/lsc-sde/.github/workflows/update-submodules.yaml@main
+    needs: 
+    - semver
+    - package
+    with:
+      symver: ${{ needs.semver.outputs.GitVersion_SemVer }}
+      directory: iac/helm/ohsdi
+    secrets: inherit
