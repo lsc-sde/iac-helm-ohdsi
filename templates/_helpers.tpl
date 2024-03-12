@@ -63,6 +63,34 @@
 {{- if ne .Values.security.shiro.web.enabled "" }}          
 {{- printf "-Dshiro.web.enabled=%s " .Values.security.shiro.web.enabled }}
 {{- end}}
+{{- if ne .Values.security.auth.windows.enabled "" }}          
+{{- printf "-Dsecurity.auth.windows.enabled=%s " .Values.security.auth.windows.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.kerberos.enabled "" }}          
+{{- printf "-Dsecurity.auth.kerberos.enabled=%s " .Values.security.auth.kerberos.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.openid.enabled "" }}          
+{{- printf "-Dsecurity.auth.openid.enabled=%s " .Values.security.auth.openid.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.facebook.enabled "" }}          
+{{- printf "-Dsecurity.auth.facebook.enabled=%s " .Values.security.auth.facebook.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.jdbc.enabled "" }}          
+{{- printf "-Dsecurity.auth.jdbc.enabled=%s " .Values.security.auth.jdbc.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.ldap.enabled "" }}          
+{{- printf "-Dsecurity.auth.ldap.enabled=%s " .Values.security.auth.ldap.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.ad.enabled "" }}          
+{{- printf "-Dsecurity.auth.ad.enabled=%s " .Values.security.auth.ad.enabled }}
+{{- end}}
+{{- if ne .Values.security.auth.cas.enabled "" }}          
+{{- printf "-Dsecurity.auth.cas.enabled=%s " .Values.security.auth.cas.enabled }}
+{{- end}}
+{{- if ne .Values.webapi.java_opts "" }}          
+{{- printf "%s " .Values.webapi.java_opts }}
+{{- end}}
+
 {{- end}}
 
 

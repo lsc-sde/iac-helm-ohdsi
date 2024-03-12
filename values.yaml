@@ -41,6 +41,7 @@ webapi:
   volumeMounts: []
   env: []
   resources: {}
+  java_opts: ""
   port: "8080"
   service:
     port: "8080"
@@ -49,6 +50,7 @@ webapi:
     cors:
       enabled: "true"
       origin: "http://127.0.0.1"
+
 
   truststore:
     path: ""
@@ -100,6 +102,23 @@ datasource:
 
 security:
   provider: "DisabledSecurity"
+  auth:
+    windows:
+      enabled: ""
+    kerberos:
+      enabled: ""
+    openid: 
+      enabled: ""
+    facebook:
+      enabled: ""
+    jdbc:
+      enabled: ""
+    ldap:
+      enabled: ""
+    ad:
+      enabled: ""
+    cas:
+      enabled: ""
   shiro:
     successUrl: ""
     unauthorizedUrl: ""
