@@ -8,7 +8,7 @@
 
 {{- define "ohdsi.webapi.port" -}}
 {{- if .Values.ingress.tls.enabled }}
-{{- printf "8443" }}
+{{- printf "8080" }}
 {{- else }}
 {{- printf .Values.webapi.port }}
 {{- end}}
