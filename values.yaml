@@ -45,7 +45,9 @@ webapi:
   port: "8080"
   service:
     port: "8080"
-
+  tls:
+    enabled: false
+    secretName: ""
   security:
     cors:
       enabled: "true"

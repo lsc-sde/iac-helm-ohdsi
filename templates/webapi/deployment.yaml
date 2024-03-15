@@ -15,7 +15,7 @@ spec:
       labels:
         app: {{ include "ohdsi.webapi.name" . }}
     spec:
-      {{ if .Values.ingress.tls.enabled }}
+      {{ if .Values.webapi.tls.enabled }}
       initContainers:
         - image: {{ .Values.webapi.image }}
           imagePullPolicy: Always
@@ -157,7 +157,7 @@ spec:
             value: {{ .Values.security.oid.url }}
           {{ end}}
 
-          {{ if .Values.ingress.tls.enabled }}
+          {{ if .Values.webapi.tls.enabled }}
           - name: SECURITY_SSL_ENABLED
             value: "true"
           {{ end }}
@@ -183,7 +183,7 @@ spec:
           - mountPath: /tmp
             name: ohdsi-webapi-tmpfs0
 
-          {{ if .Values.ingress.tls.enabled }}
+          {{ if .Values.webapi.tls.enabled }}
           - mountPath: /mnt/keystore
             name: keystore-volume
             readOnly: true
@@ -198,12 +198,12 @@ spec:
           medium: Memory
         name: ohdsi-webapi-tmpfs0
 
-      {{ if .Values.ingress.tls.enabled }}
+      {{ if .Values.webapi.tls.enabled }}
       - name: keystore-volume
         emptyDir: {}
       - name: certificate
         secret:
-          secretName: {{ .Values.ingress.tls.secretName }}
+          secretName: {{ .Values.webapi.tls.secretName }}
       {{ end }}
       
       {{ if .Values.webapi.volumes }}

@@ -4,7 +4,7 @@ kind: Ingress
 metadata:  
   name: {{ include "ohdsi.webapi.name" . }}
   annotations: 
-    {{ if .Values.ingress.tls.enabled }}
+    {{ if .Values.webapi.tls.enabled }}
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     {{ end }}
     nginx.ingress.kubernetes.io/upstream-vhost: {{ include "ohdsi.webapi.upstream-vhost" . }}

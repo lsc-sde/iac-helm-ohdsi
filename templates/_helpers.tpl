@@ -7,7 +7,7 @@
 {{- end }}
 
 {{- define "ohdsi.webapi.port" -}}
-{{- if .Values.ingress.tls.enabled }}
+{{- if .Values.webapi.tls.enabled }}
 {{- printf "8080" }}
 {{- else }}
 {{- printf .Values.webapi.port }}
@@ -15,7 +15,7 @@
 {{- end}}
 
 {{- define "ohdsi.webapi.portName" -}}
-{{- if .Values.ingress.tls.enabled }}
+{{- if .Values.webapi.tls.enabled }}
 {{- printf "https" }}
 {{- else }}
 {{- printf "http" }}
