@@ -24,7 +24,7 @@
 
 
 {{- define "ohdsi.webapi.javaopts" -}}
-{{- if .Values.ingress.tls.enabled }}
+{{- if .Values.webapi.tls.enabled }}
 {{- printf "-Dserver.ssl.enabled=true " }}
 {{- printf "-Dserver.ssl.key-store=/mnt/keystore/keystore.jks " }}
 {{- printf "-Dserver.ssl.keyStoreType=JKS " }}
@@ -100,7 +100,7 @@
 
 
 {{- define "ohdsi.webapi.protocol" -}}
-{{- if .Values.ingress.tls.enabled }}
+{{- if .Values.webapi.tls.enabled }}
 {{- printf "https" }}
 {{- else }}
 {{- printf "http" }}
