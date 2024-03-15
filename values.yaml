@@ -52,6 +52,15 @@ webapi:
     cors:
       enabled: "true"
       origin: "http://127.0.0.1"
+    db:
+      datasource:
+        schema: ""
+        url: ""
+        driverClassName: ""
+        username: ""
+        password:
+          secret: ""
+          key: "db-password"
 
 
   truststore:

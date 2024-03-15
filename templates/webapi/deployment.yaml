@@ -167,6 +167,34 @@ spec:
             value: {{ include "ohdsi.webapi.javaopts" . }}
           {{ end }}
 
+          {{ if .Values.webapi.security.db.datasource.schema }}          
+          - name: SECURITY_DB_DATASOURCE_SCHEMA
+            value: {{ .Values.webapi.security.db.datasource.schema }}
+          {{ end}}
+
+          {{ if .Values.webapi.security.db.datasource.url }}          
+          - name: SECURITY_DB_DATASOURCE_URL
+            value: {{ .Values.webapi.security.db.datasource.url }}
+          {{ end}}
+
+          {{ if .Values.webapi.security.db.datasource.driverClassName }}          
+          - name: SECURITY_DB_DATASOURCE_DRIVERCLASSNAME
+            value: {{ .Values.webapi.security.db.datasource.driverClassName }}
+          {{ end}}
+          
+          {{ if .Values.webapi.security.db.datasource.username }}          
+          - name: SECURITY_DB_DATASOURCE_USERNAME
+            value: {{ .Values.webapi.security.db.datasource.username }}
+          {{ end}}
+
+          {{ if .Values.webapi.security.db.datasource.password.secretName }}          
+          - name: SECURITY_DB_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.webapi.security.db.datasource.password.secretName }}
+                key: {{ .Values.webapi.security.db.datasource.password.key }}
+          {{ end}}
+
           {{ if .Values.webapi.env }}          
           {{ toYaml .Values.webapi.env | nindent 10 }}
           {{ end }}
