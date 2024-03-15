@@ -187,11 +187,11 @@ spec:
             value: {{ .Values.webapi.security.db.datasource.username }}
           {{ end}}
 
-          {{ if .Values.webapi.security.db.datasource.password.secretName }}          
+          {{ if .Values.webapi.security.db.datasource.password.secret }}          
           - name: SECURITY_DB_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.webapi.security.db.datasource.password.secretName }}
+                name: {{ .Values.webapi.security.db.datasource.password.secret }}
                 key: {{ .Values.webapi.security.db.datasource.password.key }}
           {{ end}}
 
