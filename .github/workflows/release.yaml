@@ -11,5 +11,5 @@ jobs:
     uses: lsc-sde/lsc-sde/.github/workflows/helm-release.yaml@main
     with:
       directory: iac/helm/ohsdi
-      yamlPath: ohdsi_chart_version
+      yamlPath: ohdsi
     secrets: inherit
