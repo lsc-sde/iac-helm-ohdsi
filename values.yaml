@@ -34,6 +34,9 @@ hades:
 
 webapi:
   image: "lscsde/ohdsi-webapi:0.1.0"
+  db:
+    isExternal: true
+    externalImage: lscsde/broadsea-atlasdb-loader:0.1.0
   replicas: 1
   nodeSelector: {}
   tolerations: []

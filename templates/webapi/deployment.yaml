@@ -15,8 +15,28 @@ spec:
       labels:
         app: {{ include "ohdsi.webapi.name" . }}
     spec:
-      {{ if .Values.webapi.tls.enabled }}
       initContainers:
+      {{ if .Values.webapi.db.isExternal }}
+        - image: {{ .Values.webapi.db.externalImage }}
+          imagePullPolicy: Always
+          name: prepare-db
+          env:
+          - name: POSTGRES_HOST
+            value: {{ .Values.datasource.hostname }}
+
+          - name: POSTGRES_USER
+            value: {{ .Values.datasource.user }}
+
+          - name: POSTGRES_DB
+            value: {{ .Values.datasource.database }}
+
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ohdsi.datasource.password.secret" . }}
+                key: {{ .Values.datasource.password.key }}              
+      {{ end }}
+      {{ if .Values.webapi.tls.enabled }}
         - image: {{ .Values.webapi.image }}
           imagePullPolicy: Always
           name: pem-to-keystore
