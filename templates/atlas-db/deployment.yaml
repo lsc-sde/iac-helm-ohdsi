@@ -1,0 +1,49 @@
+{{- if not .Values.webapi.db.isExternal }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ include "ohdsi.atlasdb.name" . }}
+  name: {{ include "ohdsi.atlasdb.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "ohdsi.atlasdb.name" . }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ohdsi.atlasdb.name" . }}
+    spec:
+      containers:
+        - env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "ohdsi.datasource.password.secret" . }}
+                key: {{ .Values.datasource.password.key }}       
+
+          {{ if .Values.atlasdb.env }}          
+          {{ toYaml .Values.atlasdb.env | nindent 10 }}
+          {{ end }}
+          image: {{ .Values.atlasdb.image }}
+          imagePullPolicy: Always
+          name: atlas
+          ports:
+          - containerPort: {{ .Values.atlasdb.port }}
+          resources: 
+          {{ if .Values.atlasdb.resources }}          
+          {{ toYaml .Values.atlasdb.resources | nindent 10 }}
+          {{ end }}
+          volumeMounts:
+          {{ if .Values.atlasdb.volumeMounts }}          
+          {{ toYaml .Values.atlasdb.volumeMounts | nindent 10 }}
+          {{ end }}
+      restartPolicy: Always
+      volumes:
+      {{ if .Values.atlasdb.volumes }}
+      {{ toYaml .Values.atlasdb.volumes | nindent 6 }}
+      {{ end }}
+{{- end -}}
+  

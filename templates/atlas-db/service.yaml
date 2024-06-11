@@ -1,0 +1,18 @@
+{{- if not .Values.webapi.db.isExternal }}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: {{ include "ohdsi.atlasdb.name" . }}
+  name: {{ include "ohdsi.atlasdb.name" . }}
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  selector:
+    app: {{ include "ohdsi.atlasdb.name" . }}
+  ports:
+  - name: pgsql
+    port: {{ .Values.atlasdb.service.port }} 
+    targetPort: {{ .Values.atlasdb.port }}
+{{- end -}}
